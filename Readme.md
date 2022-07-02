@@ -90,7 +90,7 @@ curl --request GET \
                       ‘mtime’: ‘timestamp’
                       }
     }
-```sh
+```
 
 #### POST /api/exec/scan
 
