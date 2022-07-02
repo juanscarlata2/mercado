@@ -69,7 +69,7 @@ curl --request POST \
 Permite traer la metadata de un archivo en espeficico, para definir el archivo se usa el parametro _path_. Entre los datos retornados se encuentran
 - *permission*: incluye los permisos del archivo, el propietario y el grupo
 - *SHA256*: el hash SHA256 del archivo definido
-- *timestamps*: datos relacionados con el tiempo de creacion y modificacion, entrega el ctime, atime y mtime
+- *timestamps*: datos relacionados con el tiempo de creación y modificación, entrega el ctime, atime y mtime
 
 ##### Request
 ```sh
@@ -78,16 +78,16 @@ curl --request GET \
       --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_' \
 ```
 ##### Respuesta
- Si la peticion es exitosa (*Codigo 200*)
+ Si la petición es exitosa (*Codigo 200*)
  ```sh
  {
-      ‘permissions’: {‘permission’: ‘-rw-r--r--’,
-                      ‘user’: ‘tilin’,
-                      ‘group’: ‘administrator’
+      "permissions": {"permission": "-rw-r--r--",
+                      "user": "tilin",
+                      "group": "administrator"
                       }
-      ‘SHA256’: ‘hash’,
-      ‘timestamps’:  {‘atime’: ‘timestamp’,
-                      ‘mtime’: ‘timestamp’
+      "SHA256": "hash",
+      "timestamps":  {"atime": "timestamp",
+                      "mtime": "timestamp"
                       }
     }
 ```
