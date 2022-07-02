@@ -1,0 +1,42 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTFileAPi</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.1/css/bulma.min.css">
+
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-danger is-light" href={{ url_for('logout') }}>
+            <strong>Logout</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+    <section class="section">
+            <div class="column">
+                <h1 class="title is-1">VTFileAPi</h1>
+                <h1 class="subtitle">Administrative console</h1>
+                
+        
+
+    <div class="tabs">
+        <ul>
+          <li><a href="{{ url_for('changeaccount') }}">Account</a></li>
+          <li><a href="{{ url_for('apikey') }}">API key</a></li>
+          <li><a href="{{ url_for('virus') }}">Virus Total</a></li>
+        </ul>
+      </div>
+      <div>
+        {% block content %}
+        {% endblock %}
+      </div>
+</body>
+

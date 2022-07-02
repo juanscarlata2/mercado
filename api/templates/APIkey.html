@@ -1,0 +1,55 @@
+{% extends "admin.html" %}
+{% block content %}
+<h1 class="subtitle">Create API key</h1>
+<form action="{{url_for('craete_api')}}" method="post">
+    <div class="columns">
+        <div class="control">
+            <div class="column">
+                <input required type="text" class="input" placeholder="API KEY name" id="name" name="name">
+            </div>
+        </div>
+        <div class="column">
+            <button class="button is-primary">Create</button>
+        </div>
+        {% if key %}
+        <div>
+            <label class="column is-10" for="password">{{ key }}</label>
+        </div>
+        {% endif %}
+    </div>
+    {# Mostrar mensajes / errores si es que existen #}
+    {% with mensajes_flash = get_flashed_messages() %}
+    {% if mensajes_flash %}
+    <div class="notification is-danger mt-2">
+        {% for mensaje in mensajes_flash %}
+        <li>{{ mensaje }}</li>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+<h1 class="subtitle">Manage API Keys</h1>
+{% if api_keys %}
+<table class="table">
+    {% for id in api_keys %}    
+        <tr>               
+            <td>{{ api_keys[id][1] }}</td>
+            <td >**************** </td>
+            <td>
+                <form action="{{url_for('apikey')}}" method="post">
+                    <input type = "hidden" name = "id" value = {{ id }} />
+                    <button class="button is-danger"> Remove </button>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                </form>
+            </td>
+
+        </tr>
+    {% endfor %}    
+</table>
+{% else %}
+<h1>There are no api keys to display yet.</h1>
+{% endif %}
+
+{% endblock %}

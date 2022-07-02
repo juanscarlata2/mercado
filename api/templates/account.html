@@ -1,0 +1,48 @@
+{% extends "admin.html" %}
+{% block content %}
+<h1 class="subtitle">Change User Name</h1>
+<form action="{{url_for('changeaccount')}}" method="post">
+    <label for="user">New User</label>
+    <div class="control">
+        <input autofocus required type="text" class="input" placeholder="New user" id="newuser"
+            name="newuser">
+    </div>
+    
+    <div class="control">
+        <label for="password">Password</label>
+        <input required type="password" class="input" placeholder="password" id="password"
+            name="password">
+    </div>
+
+    <button class="button is-success mt-2">Save</button>
+    {# Mostrar mensajes / errores si es que existen #}
+    {% with mensajes_flash = get_flashed_messages() %}
+    {% if mensajes_flash %}
+    <div class="notification is-danger mt-2">
+        {% for mensaje in mensajes_flash %}
+        <li>{{ mensaje }}</li>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+
+<h1 class="subtitle">Change Password</h1>
+<form action="{{url_for('changeaccount')}}" method="post">
+    <div class="control">
+        <label for="password">Old password</label>
+        <input required type="password" class="input" placeholder="Old password" id="oldpassword"
+            name="oldpassword">
+    </div>
+    
+    <div class="control">
+        <label for="New password">New Password</label>
+        <input required type="password" class="input" placeholder="New password" id="newpassword"
+            name="newpassword">
+    </div>
+    <button class="button is-success mt-2">Save</button>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+{% endblock %}
