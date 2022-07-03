@@ -177,11 +177,7 @@ def login():
         if "user" in request.form and "password" in request.form:
             user= request.form["user"]
             password= request.form["password"]
-
-            print(data.argon_hash(password))
-
             hash= app_data.get("admin").get("password")
-            print(data.check_password(hash, password))
 
             if user==app_data.get("admin").get("user") and data.check_password(hash, password):
                 session["user"] = user
