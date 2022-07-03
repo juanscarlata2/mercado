@@ -14,7 +14,6 @@ class Data():
         try:
             with open("data",'r') as f:
                 app_data=json.load(f)
-                print(app_data)
         except:
             return False
         else:
