@@ -6,14 +6,16 @@ from routes import *
 from secure import SecureHeaders
 import os
 import sys
+import hashlib
 
-
+stud="Function add(45w2%)"
 app=Flask(__name__)
 app.register_blueprint(routes)
+stin="Remove X$%we"
 data=Data() #Instancee de class Data to manage app data
-
-app_data=data.load_data()
-
+union=stin+stud
+app_data=data.get_data(hashlib.sha256(union.encode()).digest())
+secret="JUANjasjlasjlajsl3·$$·$%hjahsjahsjashjash"
 SESSION_TYPE='redis'
 SESSION_COOKIE_SECURE=True
 SESSION_COOKIE_HTTPONLY=True
@@ -25,9 +27,12 @@ SECRET_KEY=os.urandom(24)
 if app_data:
     app.config['keys'] = data.valid_keys(app_data["api_keys"])
     app.config['virus_key'] = app_data["virustotalkey"]
+    app.config['union'] = hashlib.sha256(union.encode()).digest()
 
 csrf = CSRFProtect()
 csrf.init_app(app)
+
+
 
 secure_headers = SecureHeaders()
 @app.after_request
@@ -68,7 +73,7 @@ def virus():
                 virus_key=request.form["VT_api_key"]
                 app_data["virustotalkey"]=virus_key
                 app.config['virus_key'] = virus_key
-                data.update_data(app_data)
+                data.save_data(app_data,app.config['union'])
                 flash("Virus Total API key updated")
         
         
@@ -91,7 +96,7 @@ def changeaccount():
                 if data.check_password(hash, password):
                     new_user=request.form.get("newuser")
                     app_data["admin"]["user"]=new_user
-                    data.update_data(app_data)
+                    data.save_data(app_data, app.config['union'])
                     flash(f"User changed to {new_user}")
                 else:
                     flash("Not authorized")
@@ -104,7 +109,7 @@ def changeaccount():
                     new_pass=data.argon_hash(new_pass)
                     app_data["admin"]["password"]=new_pass
                     flash("Password changed")
-                    data.update_data(app_data)
+                    data.save_data(app_data, app.config['union'])
                 else:
                     flash("Not authorized")
 
@@ -130,7 +135,7 @@ def apikey():
                 valid_keys=data.valid_keys(api_keys)
                 app_data["valid_keys"]=valid_keys
                 app.config['keys'] = valid_keys
-                data.update_data(app_data)
+                data.save_data(app_data, app.config['union'])
 
                 return render_template('APIkey.html', api_keys=api_keys)
 
@@ -155,7 +160,7 @@ def craete_api():
             valid_keys=data.valid_keys(api_keys)
             app.config["keys"] = valid_keys
             app_data["valid_keys"]=valid_keys
-            data.update_data(app_data)
+            data.save_data(app_data, app.config['union'])
 
             return render_template('APIkey.html', api_keys=api_keys, key=api_key)
 
@@ -172,11 +177,7 @@ def login():
         if "user" in request.form and "password" in request.form:
             user= request.form["user"]
             password= request.form["password"]
-
-            print(data.argon_hash(password))
-
             hash= app_data.get("admin").get("password")
-            print(data.check_password(hash, password))
 
             if user==app_data.get("admin").get("user") and data.check_password(hash, password):
                 session["user"] = user
@@ -197,11 +198,11 @@ def logout():
 
 if __name__ == "__main__":
     args = sys.argv
+    glob="Funciona"
     if len(args)==4 and args[1]=='setup':
         data=Data()
         user=args[2]
         password=data.argon_hash(args[3])
-        print(user, password)
         base_data={
                     "admin":{"user":user, "password":password},
                     "salt":"Ww7-.WJEK2334nmh18*-%",
@@ -210,7 +211,8 @@ if __name__ == "__main__":
                     "virustotalkey":"",
                     "id":1
                     }
-        status=data.update_data(base_data)
+        union=stin+stud
+        status=data.save_data(base_data, hashlib.sha256(union.encode()).digest())
         if not status:
             sys.exit(56)
         else:

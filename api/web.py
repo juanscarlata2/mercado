@@ -14,7 +14,6 @@ class Data():
         try:
             with open("data",'r') as f:
                 app_data=json.load(f)
-                print(app_data)
         except:
             return False
         else:
@@ -51,7 +50,7 @@ class Data():
 
         return val_keys
 
-    def encrypt(key, data):
+    def encrypt(self,key, data):
         data=str(data).encode()
         cipher = AES.new(key, AES.MODE_EAX)
         nonce = cipher.nonce
@@ -65,9 +64,10 @@ class Data():
         return plaintext
 
 
-    def save_data(self,data):
+    def save_data(self,data, key):
+        encrypt_data=self.encrypt(key, data)
         with open("data", "wb") as f:
-            for d in data:
+            for d in encrypt_data:
                 f.write(d)
                 f.write(b'nanan')
 
