@@ -54,16 +54,14 @@ Permite eliminar una lista de archivos los cuales se envian por medio de un json
 ##### Request
 ```sh
 curl --request POST \
-      --url http://localhost:5000/api/exec/delete \
+      --url http://127.0.0.1:5000/api/exec/delete \
       --header 'content-type: application/json' \
-      --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_' \
-      --data '{
-      "files":["/opt/malware.sh","/users/tilin/esotilin.txt"],
-      }'
+      --header 'API-Key: UNzmCzYp0AnVwJoHZO2xqbFpetaxnrls0ciBidXjgFR2mYyo58xRLgW1oTWd5XEixr52hu-7FFyd7-2TszLajQ' \
+      --data '{"files":["/home/kali/test/malware.sh","/home/kali/test/malware2"]}'
 ```
 ##### Respuesta
  Si la peticion es exitosa (*Codigo 200*),  responde con el estado de la operación por cada archivo (Deleted o File does not exist):
- `{"/opt/malware.sh":"Deleted","/users/tilin/esotilin.txt":"File does not exist"}`
+ `{"/home/kali/test/malware.sh":"Deleted","/home/kali/test/malware2":"File does not exist"}`
 
 ####  GET /api/file
 Permite traer la metadata de un archivo en espeficico, para definir el archivo se usa el parametro _path_. Entre los datos retornados se encuentran
@@ -74,8 +72,8 @@ Permite traer la metadata de un archivo en espeficico, para definir el archivo s
 ##### Request
 ```sh
 curl --request GET \
-      --url http://localhost:5000/api/file?path=%2Fhome%2Fpepe%2Fmalware.exe \
-      --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_' \
+      --url http://localhost:5000/api/file?path=/home/kali/test/malware2.sh\ 
+      --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_'
 ```
 ##### Respuesta
  Si la petición es exitosa (*Codigo 200*)
@@ -93,5 +91,45 @@ curl --request GET \
 ```
 
 #### POST /api/exec/scan
+Crea un escaneo de un archivo en el sistema, como dato de entrada se le debe enviar un json con la ruta del archivo a escanear, `{"file":"/opt/tilin/malware.sh"}`. Como respuesta retorna el status de la creacion del escaneo, sus posibles valores son:
+- Started (Codigo 201): Se creó correctamente el escaneo, adicionalmente se retorna el id del escaneo para poder consultar su estado. 
+- Scanning error (Codido 503): Se presentó un problema al crear un escaneo
+-File not found (Code 404): El archivo a analizar no existe
+
+##### Request
+```sh
+curl --request POST \
+      --url http://localhost:5000/api/exec/scan\
+      --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_' \
+      --header 'content-type: application/json' \
+      --data '{"file":"/opt/malware.sh"}'
+```
+##### Respuesta
+ Si la petición es exitosa (*Codigo 200*)
+ ###### Successfully
+
+ ```sh
+ {"id":"NTM3NmVjNzJmYTZjMzYzNjcwYmE1NTY5ODBiZmNiYTE6MTY1Njk4NjExOA==","status":"Started"}
+```
+###### With error
+```sh
+ {"status":"Scanning error"}
+```
+o
+
+```sh
+ {"status":"File not found"}
+```
 
 #### GET /api/exec/scan
+Una vez iniciado un escaneo de forma exitosa se puede consultar el estatus del mismo con este endpoint, y una vez terminado retorna la información del escaneo, en ella se puede ver el numero de bases de datos que reportan al archivo como malicioso, entre otra información
+##### Request
+```sh
+curl --request GET\
+     --url http://localhost:5000/api/exec/scan?id=NTM3NmVjNzJmYTZjMzYzNjcwYmE1NTY5ODBiZmNiYTE6MTY1Njk4NjExOA== \
+      --header 'API-Key: a53MbXL4NeCW18OTZs8rEHAJlZUHfDjaCST9WCK5VK3n2qCZOdE3LIpjSMbbFHkf6q2dOzP_' \
+```
+##### Respuesta
+```sh
+{"confirmed-timeout":0,"failure":0,"harmless":0,"malicious":0,"suspicious":0,"timeout":0,"type-unsupported":15,"undetected":57}
+```
