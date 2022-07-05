@@ -2,8 +2,8 @@
 
 SETUP_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo $SETUP_DIR
+chmod +x "$SETUP_DIR/app"
 
-BIN_FILE="$SETUP_DIR/appBIN_FILE=$SETUP_DIR/app"
 WORK_DIRECTORY="/etc/mercapi"
 
 
@@ -54,7 +54,8 @@ fi
 
 
 cp "$SETUP_DIR/app" "$WORK_DIRECTORY"
-cp "$SETUP_DIR/data" "$WORK_DIRECTORY"
+mv "$SETUP_DIR/data" "$WORK_DIRECTORY"
+chmod 600 "$WORK_DIRECTORY/data"
 
 echo "[Unit]" >> service_file
 echo "Description=Daemon mercado api" >> service_file
