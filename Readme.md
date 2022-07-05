@@ -30,10 +30,7 @@ En este apartado se pueden crear las API Key para poder interactuar con mercapi,
 ### Virus Total
 Se configura la API key para poder interactuar con **_virus Total_**. 
 Para poder hacer el análisis de los archivos es necesario configurar este parametro, para solicitar una key se puede seguir la siguiente guia, https://support.virustotal.com/hc/en-us/articles/115002088769-Please-give-me-an-API-key
-Para facilitar la tarea se puede uasar la siguiente Key:
-```sh
-2f6f90a1af62e060eb41dafa14a9b1b6210c2511455088ecb823adbcc9f22d2c
-```
+
 ## Descripcion de la API
 ## Descripcion de la API
 Para poder interactuar con mercapi es necesario contar con una **_API key_** generada por medio de la interfaz web de administracion
